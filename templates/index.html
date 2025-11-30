@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>記錄</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar-container">
+      <h1 class="site-title">黑膠唱片與經典專輯小冊紀錄</h1>
+      <nav class="nav-links">
+        <a href="{{ url_for('main_page') }}">首頁</a>
+        <a href="{{ url_for('popular_page') }}">熱門</a>
+        <a href="{{ url_for('index_page') }}">記錄</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-container">
+
+    <aside class="sidebar">
+      <h2>標籤</h2>
+      <div class="tags">
+        <button class="tag" onclick="toggleTag('日語')">日語</button>
+        <button class="tag" onclick="toggleTag('民謠')">民謠</button>
+        <button class="tag" onclick="toggleTag('華語')">華語</button>
+        <button class="tag" onclick="toggleTag('英語')">英語</button>
+        <button class="tag" onclick="toggleTag('經典搖滾')">經典搖滾</button>
+        <button class="tag" onclick="toggleTag('英倫搖滾')">英倫搖滾</button>
+        <button class="tag" onclick="toggleTag('硬式搖滾')">硬式搖滾</button>
+        <button class="tag" onclick="toggleTag('前衛金屬')">前衛金屬</button>
+        <button class="tag" onclick="toggleTag('抒情')">抒情</button>
+        <button class="tag" onclick="toggleTag('電子音樂')">電子音樂</button>
+        <button class="tag" onclick="toggleTag('Funk')">Funk</button>
+        <button class="tag" onclick="toggleTag('綜藝風格')">綜藝風格</button>
+        <button class="tag" onclick="toggleTag('女聲')">女聲</button>
+        <button class="tag" onclick="toggleTag('輕搖滾')">輕搖滾</button>
+        <button class="tag" onclick="toggleTag('青春元氣派')">青春元氣派</button>
+      </div>
+      <div style="margin-top: 20px;">
+        <label for="sort">排序依據：</label>
+        <select id="sort" onchange="onSortChange()" style="margin-top: 5px; width: 100%;">
+          <option value="upload-asc">上載時間（順序）</option>
+          <option value="upload-desc">上載時間（倒序）</option>
+          <option value="publish-asc">出版時間（順序）</option>
+          <option value="publish-desc">出版時間（倒序）</option>
+        </select>
+      </div>
+    </aside>
+
+    <main class="card-main-content">
+      <div id="card-grid" class="card-grid"></div>
+
+      <div class="pagination"></div>
+    </main>
+
+  </div>
+
+<script>
+const allCards = [
+  { img: 'static/image/image00001.jpg', text: 'Raydio --- Raydio (1978)', url: 'disk01', tags: ['Funk','英語'], uploadDate: '2025', publishDate: '1978' },
+  { img: 'static/image/image00003.jpg', text: '謝雷 --- 謝雷之歌', url: 'disk02', tags: ['華語','抒情'], uploadDate: '2025', publishDate: '1964'  },
+  { img: 'static/image/image00005.jpg', text: 'The Rolling Stones --- Hot Rocks 1964–1971', url: 'disk03', tags: ['經典搖滾','英倫搖滾','英語'], uploadDate: '2025', publishDate: '1971'  },
+  { img: 'static/image/image00007.jpg', text: 'The Rockets --- Electric Sound', url: 'disk04', tags: ['日語','電子音樂'], uploadDate: '2025', publishDate: '1970'  },
+  { img: 'static/image/image00009.jpg', text: 'The Brothers Four --- 百萬世界', url: 'disk05', tags: ['英語','民謠'], uploadDate: '2025', publishDate: '1978'  },
+  { img: 'static/image/image00011.jpg', text: 'Ritchie Blackmore’s Rainbow --- Rainbow (1975)', url: 'disk06', tags: ['英語','硬式搖滾','前衛金屬'], uploadDate: '2025', publishDate: '1975'  },
+  { img: 'static/image/image00013.jpg', text: '庾澄慶 --- 哈林音樂頻道', url: 'disk07', tags: ['華語','綜藝風格'], uploadDate: '2025', publishDate: '1990'  },
+  { img: 'static/image/image00015.jpg', text: '蘇慧倫 --- 很愛很愛你計劃：Love You More & More', url: 'disk08', tags: ['華語','抒情'], uploadDate: '2025', publishDate: '2001'  },
+  { img: 'static/image/image00017.jpg', text: '杜德偉 --- Talking heart TO heart', url: 'disk09', tags: ['華語','抒情'], uploadDate: '2025', publishDate: '2002'  },
+  { img: 'static/image/image00018.jpg', text: '徐懷鈺 Yuki --- 向前衝', url: 'disk10', tags: ['華語','青春元氣派'], uploadDate: '2025', publishDate: '1998'  },
+  { img: 'static/image/image00020.jpg', text: '莫文蔚 Karen Mok --- 我要說：Say', url: 'disk11', tags: ['華語','輕搖滾'], uploadDate: '2025', publishDate: '1997'  },
+  { img: 'static/image/image00022.jpg', text: '張惠妹 A-Mei --- 張惠妹 II', url: 'disk12', tags: ['華語','女聲'], uploadDate: '2025', publishDate: '1997'  },
+];
+const cardsPerPage = 6;
+
+function toggleTag(tag) {
+  const url = new URL(window.location.href);
+  const params = url.searchParams;
+  const tags = params.getAll('tag');
+
+  const index = tags.indexOf(tag);
+  if (index > -1) {
+    tags.splice(index, 1);
+  } else {
+    tags.push(tag);
+  }
+
+  params.delete('tag');
+  tags.forEach(t => params.append('tag', t));
+  params.set('page', 1);
+
+  window.location.href = url.pathname + '?' + params.toString();
+}
+function sortCards(cards, sortBy) {
+  return [...cards].sort((a, b) => {
+    const aDate = new Date(a[sortBy.field] + '-01-01');
+    const bDate = new Date(b[sortBy.field] + '-01-01');
+    return sortBy.order === 'asc' ? aDate - bDate : bDate - aDate;
+  });
+}
+
+function renderPage(page) {
+  const cardGrid = document.getElementById("card-grid");
+  cardGrid.innerHTML = '';
+  const urlParams = new URLSearchParams(window.location.search);
+  const filterTags = urlParams.getAll('tag');
+  const sortParam = urlParams.get('sort') || 'upload-asc';
+  const [field, order] = sortParam.split('-');
+  const sortBy = { field: field + 'Date', order };
+  let filteredCards = filterTags.length > 0
+    ? allCards.filter(card => card.tags && filterTags.every(tag => card.tags.includes(tag)))
+    : allCards;
+  filteredCards = sortCards(filteredCards, sortBy);
+  const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
+  if (page > totalPages) page = 1;
+  const start = (page - 1) * cardsPerPage;
+  const end = start + cardsPerPage;
+  const pageCards = filteredCards.slice(start, end);
+  if (pageCards.length === 0) {
+    cardGrid.innerHTML = '<p style="color:white; padding:20px;">⚠ 無符合資料</p>';
+  }
+  pageCards.forEach(card => {
+    const tagsAttr = card.tags ? `data-tags="${card.tags}"` : "";
+    const cardHtml = `
+      <a href="${card.url}" class="card" target="_blank" ${tagsAttr}>
+        <img src="${card.img}" alt="">
+        <div class="card-text">
+          <p>${card.text}</p>
+        </div>
+      </a>
+    `;
+    cardGrid.innerHTML += cardHtml;
+  });
+}
+
+function renderPagination(filteredLength) {
+  const pagination = document.querySelector('.pagination');
+  const urlParams = new URLSearchParams(window.location.search);
+  const tags = urlParams.getAll('tag');
+  const currentPage = parseInt(urlParams.get('page')) || 1;
+  const sort = urlParams.get('sort') || 'upload-asc';
+  const totalPages = Math.ceil(filteredLength / cardsPerPage);
+  const pageLinks = Array.from({length: totalPages}, (_, i) => {
+    const page = i + 1;
+    const newParams = new URLSearchParams();
+    tags.forEach(t => newParams.append('tag', t));
+    newParams.set('sort', sort);
+    newParams.set('page', page);
+    return `<a href="?${newParams.toString()}" class="${page === currentPage ? 'active' : ''}">${page}</a>`;
+  });
+  pagination.innerHTML = pageLinks.join('');
+}
+function highlightSelectedTags() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedTags = urlParams.getAll('tag');
+  document.querySelectorAll('.tag').forEach(btn => {
+    const tagText = btn.textContent.trim();
+    if (selectedTags.includes(tagText)) {
+      btn.classList.add('selected');
+    } else {
+      btn.classList.remove('selected');
+    }
+  });
+}
+function renderTagInfo() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedTags = urlParams.getAll('tag');
+  if (selectedTags.length > 0) {
+    const info = document.createElement('div');
+    info.style.color = 'white';
+    info.style.marginTop = '10px';
+    info.innerHTML = `當前標籤：<strong>${selectedTags.join(', ')}</strong>　<a href="index.html" style="color:lightblue;">清除標籤</a>`;
+    document.querySelector('.tags').appendChild(info);
+  }
+}
+function onSortChange() {
+  const url = new URL(window.location.href);
+  const sort = document.getElementById('sort').value;
+  url.searchParams.set('sort', sort);
+  url.searchParams.set('page', 1);
+  window.location.href = url.pathname + '?' + url.searchParams.toString();
+}
+window.onload = () => {
+  const params = new URLSearchParams(window.location.search);
+  const page = parseInt(params.get('page')) || 1;
+  const sortParam = params.get('sort') || 'upload-asc';
+  document.getElementById('sort').value = sortParam;
+  const tagList = params.getAll('tag');
+  const filteredCards = tagList.length > 0
+    ? allCards.filter(card => card.tags && tagList.every(tag => card.tags.includes(tag)))
+    : allCards;
+  renderPage(page);
+  renderPagination(filteredCards.length);
+  renderTagInfo();
+  highlightSelectedTags();
+};
+</script>
+</body>
+</html>

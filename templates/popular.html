@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>熱門</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-container">
+            <h1 class="site-title">黑膠唱片與經典專輯小冊紀錄</h1>
+            <nav class="nav-links">
+                <a href="{{ url_for('main_page') }}">首頁</a>
+                <a href="{{ url_for('popular_page') }}">熱門</a>
+                <a href="{{ url_for('index_page') }}">記錄</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        <a href="disk01" target="_blank" class="bordered-box link-block">
+            <div class="photo-row">
+                <h2>🔥 Top1</h2>
+                <img src="static/image/image00001.jpg" alt="熱門1" class="photo-full" />
+                <p class="photo-text">Raydio --- Raydio (1978)</p>
+            </div>
+        </a>
+
+        <section class="photo-grid">
+
+            <a href="disk02" target="_blank" class="bordered-box link-block photo-card">
+                <h2>🔥 Top2</h2>
+                <img src="static/image/image00003.jpg" alt="熱門2" />
+                <p class="photo-text">謝雷 --- 謝雷之歌</p>
+            </a>
+
+            <a href="disk03" target="_blank" class="bordered-box link-block photo-card">
+                <h2>🔥 Top3</h2>
+                <img src="static/image/image00005.jpg" alt="熱門3" />
+                <p class="photo-text">The Rolling Stones --- Hot Rocks 1964–1971</p>
+            </a>
+
+        </section>
+        
+    </main>
+
+</body>
+</html>

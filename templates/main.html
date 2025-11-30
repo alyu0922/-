@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>主頁</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar-container">
+      <h1 class="site-title">黑膠唱片與經典專輯小冊紀錄</h1>
+      <nav class="nav-links">
+        <a href="{{ url_for('main_page') }}">首頁</a>
+        <a href="{{ url_for('popular_page') }}">熱門</a>
+        <a href="{{ url_for('index_page') }}">記錄</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <h2>概要</h2>
+    <p>
+      本計畫的目的便是製作一個專門介紹黑膠唱片及專輯小冊的網站，
+      藉著這個網頁希望可以讓大眾對舊時代的音樂和歷史故事有更深入的了解。
+      會選擇小冊的紀錄而不是唱片的紀錄的原因是「我們希望主題不只是在音樂上面，而是在這些音樂後面的小故事」。
+      比起動聽的音樂，我們更希望讓大眾了解音樂的背景，是什麼時代的，是在哪裡創作的，是因為什麼而創造的。
+    </p>
+
+    <h2>研究背景</h2>
+    <p>
+      黑膠唱片作為音樂載體，流行於上世紀，而其中承載的不只是音樂本身，
+      更包括當年的時勢、政局與文化。
+      而在唱片包裝內的小冊，更是一種能夠深度了解當年文化的媒介。
+    </p>
+    <p>
+      到了今天這個連 DVD 都逐漸被淘汰的時代，黑膠唱片似乎只存在於收藏家的手中。
+      幸好，我們早已將「它們」上傳至互聯網，
+      使它們在虛擬世界中繼續存在。然而伴隨其銷售的小冊卻鮮有人保存，
+      而這些小冊，作為唱片的共同體之一，不應該被冷落或遺忘。
+    </p>
+    <p>
+      本計畫將探討並紀錄小冊的發展脈絡、設計風格與文化影響力，
+      並挑選其中經典作品進行介紹，讓瀏覽者能更深入理解其文化價值。
+    </p>
+  </main>
+
+</body>
+</html>

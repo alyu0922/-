@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>disk07</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+<body>
+  <header class="navbar">
+    <div class="navbar-container">
+      <h1 class="site-title">黑膠唱片與經典專輯小冊紀錄</h1>
+      <nav class="nav-links">
+        <a href="{{ url_for('main_page') }}">首頁</a>
+        <a href="{{ url_for('popular_page') }}">熱門</a>
+        <a href="{{ url_for('index_page') }}">記錄</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="content-section">
+    <div class="half-layout">
+      <div class="half-image">
+        <img src="{{ url_for('static', filename='image/image00013.jpg') }}" alt="">
+        <img src="{{ url_for('static', filename='image/image00014.jpg') }}" alt="">
+      </div>
+      <div class="half-text">
+        <h1>庾澄慶 --- 哈林音樂頻道</h1>
+        <h3>發行年代：1990</h3>
+        <h3>演出者： 庾澄慶（Harlem Yu）</h3>
+        <h3>唱片公司：滾石唱片</h3>
+        <p>這張專輯就像一場繽紛的電視綜藝秀，集合音樂、娛樂與潮流於一體。庾澄慶不僅是歌手，更是一位娛樂節目的靈魂人物，他將自己的音樂包裝成一個「頻道」，讓聽眾每一首歌都像轉到不同的節目單元。</p>
+        <p>專輯小冊風格強烈視覺化，封底延續主視覺：哈林身穿亮橘與藍色服裝，在五光十色的霓虹點陣中舞動，製造出動態疊影效果，極具90年代視覺衝擊感。小冊內頁包括節目單式的曲目設計、節目主持風格的自我介紹，體現他對音樂節目主持人的致敬。</p>
+      </div>
+    </div>
+
+    <div class="album-tags">
+      <span>標籤：</span>
+      <a href="{{ url_for('index_page') }}?tag=華語">華語</a>
+      <a href="{{ url_for('index_page') }}?tag=綜藝風格">綜藝風格</a>
+    </div>
+
+    <section class="comment-section">
+      <h2>留言區</h2>
+      <form id="commentForm">
+        <input type="text" id="name" placeholder="你的名字（可選）">
+        <textarea id="content" rows="4" placeholder="寫下你的留言..." required></textarea>
+        <button type="submit">送出留言</button>
+      </form>
+      <div class="comment-list" id="commentList"></div>
+    </section>
+  </main>
+
+  <script>
+    const diskId = "disk07";
+    const listEl = document.getElementById("commentList");
+
+    function renderComment(comment) {
+      const div = document.createElement("div");
+      div.className = "comment-item";
+      div.innerHTML = `
+        <div class="comment-meta">${comment.name || "匿名"} ・ ${comment.timestamp}</div>
+        <div>${comment.content}</div>
+      `;
+      listEl.appendChild(div);
+    }
+
+    async function loadComments() {
+      listEl.innerHTML = "";
+      const res = await fetch("/comments?disk=" + diskId);
+      const comments = await res.json();
+      comments.forEach(renderComment);
+    }
+
+    document.getElementById("commentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const content = document.getElementById("content").value;
+      const timestamp = new Date().toLocaleString();
+
+      const res = await fetch("/comments?disk=" + diskId, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, content, timestamp })
+      });
+
+      if (res.ok) {
+        document.getElementById("commentForm").reset();
+        loadComments();
+      } else {
+        alert("留言失敗！");
+      }
+    });
+
+    loadComments();
+  </script>
+</body>
+</html>

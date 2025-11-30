@@ -1,0 +1,443 @@
+
+
+/* global */
+
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+}
+
+.nav-links a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: #cccccc;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: yellow;
+}
+
+
+/* 
+main
+*/
+
+
+.main-content {
+  max-width: 800px;
+  margin: 100px auto 0;
+  padding: 1rem;
+}
+
+.main-content h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.main-content p {
+  color: #bbbbbb;
+  line-height: 1.6;
+}
+
+
+/* 
+popular 
+*/
+
+
+.page-container {
+  display: flex;
+  padding-top: 100px;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #2a2a2a;
+  padding: 1rem;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar h2 {
+  font-size: 1.2rem;
+  color: #ffcc99;
+  margin: 0;
+  text-align: center;
+}
+
+.search-input {
+  width: 80%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: none;
+  background-color: #444;
+  color: white;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.photo-row {
+  margin-bottom: 2rem;
+}
+
+.photo-full {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.photo-text {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #cccccc;
+}
+
+.photo-grid {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.photo-card {
+  flex: 1;
+}
+
+.photo-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.photo-card p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #cccccc;
+}
+
+.bordered-box {
+  border: 2px solid #555;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #2a2a2a;
+  transition: transform 0.2s;
+  margin-bottom: 2rem;
+}
+
+.link-block {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.link-block:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.4);
+  border-color: #ff6600;
+}
+
+
+/*
+index
+*/
+
+
+.card-main-content {
+  flex: 1;
+  padding: 2rem;
+  padding-right: 3rem;
+  box-sizing: border-box;
+}
+
+.card-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.card {
+  display: flex;
+  background-color: #2a2a2a;
+  border: 2px solid #555;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #ccc;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  min-height: 160px;
+  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+  border-color: yellow;
+}
+
+.card img {
+  width: 200px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-text {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.pagination {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.pagination a {
+  color: #ffcc99;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.tag {
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.tag:hover {
+  background-color: #666;
+}
+.tag.selected {
+  background-color: yellow;
+  color: black;
+}
+
+/* Cards */
+.card-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+}
+.card {
+  display: flex;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: scale(1.01);
+}
+.card img {
+  width: 140px;
+  height: auto;
+  object-fit: cover;
+}
+.card-text {
+  padding: 10px;
+  color: white;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+}
+
+/* Pagination */
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+.pagination a {
+  color: white;
+  padding: 6px 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.pagination a:hover {
+  text-decoration: underline;
+}
+.pagination a.active {
+  text-decoration: underline;
+  font-weight: bold;
+  color: yellow; /* 保留你目前的顏色設計 */
+}
+
+/* Tag Info Section */
+.tags + div {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #ddd;
+}
+.tags + div a {
+  color: #4eaaff;
+  text-decoration: underline;
+}
+
+
+/*
+tag
+*/
+
+
+.content-section {
+  padding-top: 120px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.half-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.half-image {
+  flex: 1;
+}
+
+.half-image img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.half-text {
+  flex: 1;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #cccccc;
+}
+
+.album-tags {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #fff;
+}
+.album-tags span {
+  font-weight: bold;
+}
+.album-tags a {
+  background: #333;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #fff;
+  margin-right: 6px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+}
+.album-tags a:hover {
+  background: #555;
+}
+
+
+/*
+comment
+*/
+
+
+.comment-section {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+}
+
+.comment-section h2 {
+  margin-bottom: 10px;
+}
+
+.comment-section form textarea,
+.comment-section form input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.comment-section button {
+  background-color: #ffc66d;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.comment-list {
+  margin-top: 20px;
+}
+
+.comment-item {
+  border-top: 1px solid #444;
+  padding: 10px 0;
+}
+
+.comment-item:first-child {
+  border-top: none;
+}
+
+.comment-meta {
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 4px;
+}

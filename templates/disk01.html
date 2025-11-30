@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>disk01</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+<body>
+  <header class="navbar">
+    <div class="navbar-container">
+      <h1 class="site-title">黑膠唱片與經典專輯小冊紀錄</h1>
+      <nav class="nav-links">
+        <a href="{{ url_for('main_page') }}">首頁</a>
+        <a href="{{ url_for('popular_page') }}">熱門</a>
+        <a href="{{ url_for('index_page') }}">記錄</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="content-section">
+    <div class="half-layout">
+      <div class="half-image">
+        <img src="{{ url_for('static', filename='image/image00001.jpg') }}" alt="">
+        <img src="{{ url_for('static', filename='image/image00002.jpg') }}" alt="">
+      </div>
+      <div class="half-text">
+        <h1>Raydio --- Raydio (1978)</h1>
+        <h3>發行年代：1978年</h3>
+        <h3>演出者：Raydio（Ray Parker Jr., Jerry Knight 等）</h3>
+        <h3>唱片公司：Arista Records</h3>
+        <h3>唱片編號： MH-7295</h3>
+        <p>The Brothers Four 是美國知名民歌四重唱團體，以溫暖和聲與清新旋律走紅於1960年代。本專輯《百萬世界》由台灣海山唱片發行，選錄了多首經典民謠歌曲，專為華語市場製作，封面同時印有中文與英文資訊。</p>
+        <p>專輯名「百萬世界」寓意他們的音樂穿越國界、打動人心，是那個年代國際音樂文化交流的重要見證。</p>
+      </div>
+    </div>
+
+    <div class="album-tags">
+      <span>標籤：</span>
+      <a href="{{ url_for('index_page') }}?tag=Funk">Funk</a>
+      <a href="{{ url_for('index_page') }}?tag=英語">英語</a>
+    </div>
+
+    <section class="comment-section">
+      <h2>留言區</h2>
+      <form id="commentForm">
+        <input type="text" id="name" placeholder="你的名字（可選）">
+        <textarea id="content" rows="4" placeholder="寫下你的留言..." required></textarea>
+        <button type="submit">送出留言</button>
+      </form>
+      <div class="comment-list" id="commentList"></div>
+    </section>
+  </main>
+
+  <script>
+    const diskId = "disk01";
+    const listEl = document.getElementById("commentList");
+
+    function renderComment(comment) {
+      const div = document.createElement("div");
+      div.className = "comment-item";
+      div.innerHTML = `
+        <div class="comment-meta">${comment.name || "匿名"} ・ ${comment.timestamp}</div>
+        <div>${comment.content}</div>
+      `;
+      listEl.appendChild(div);
+    }
+
+    async function loadComments() {
+      listEl.innerHTML = "";
+      const res = await fetch("/comments?disk=" + diskId);
+      const comments = await res.json();
+      comments.forEach(renderComment);
+    }
+
+    document.getElementById("commentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const content = document.getElementById("content").value;
+      const timestamp = new Date().toLocaleString();
+
+      const res = await fetch("/comments?disk=" + diskId, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, content, timestamp })
+      });
+
+      if (res.ok) {
+        document.getElementById("commentForm").reset();
+        loadComments();
+      } else {
+        alert("留言失敗！");
+      }
+    });
+
+    loadComments();
+  </script>
+</body>
+</html>
